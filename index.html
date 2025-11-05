@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8" />
+  <title>Светкавичен куиз ⚡</title>
+<link rel="manifest" href="manifest.json">
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
+}
+</script>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 720px; margin: 40px auto; line-height: 1.6; }
+    h1 { text-align: center; }
+    #question { font-size: 1.3em; margin-bottom: 20px; }
+    .answers button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1em;
+      background: #f5f5f5;
+      transition: background 0.3s;
+    }
+    .answers button:hover { background: #e0e0e0; }
+    .answers button.correct { background: #c8e6c9; border-color: #4caf50; }
+    .answers button.wrong { background: #ffcdd2; border-color: #f44336; }
+    #status { margin-top: 10px; font-weight: bold; }
+    #timer { text-align: right; font-weight: bold; margin-bottom: 10px; }
+    #next-btn { margin-top: 20px; padding: 8px 14px; font-size: 1em; }
+    ul { padding-left: 20px; }
+    #start-screen { text-align: center; margin-top: 40px; }
+    input { padding: 8px; font-size: 1em; width: 70%; max-width: 300px; }
+    button.start, button.show { margin-top: 15px; padding: 10px 16px; font-size: 1em; }
+  </style>
+</head>
+<body>
+  <h1>⚡ Светкавичен куиз ⚡</h1>
+
+  <div id="start-screen">
+    <p>Въведете името на вашия отбор, за да започнете играта:</p>
+    <input type="text" id="player-name" placeholder="Име на отбора..." />
+    <br>
+    <button class="start" id="start-btn">Започни!</button>
+    <br>
+    <button class="show" id="show-last-btn">Покажи последен резултат</button>
+    <div id="last-result" style="margin-top:20px;"></div>
+  </div>
+
+  <div id="quiz" style="display:none;">
+    <div id="timer">Оставащо време: 15 сек.</div>
+    <div id="question"></div>
+    <div id="answers" class="answers"></div>
+    <div id="status"></div>
+    <button id="next-btn" disabled>Следващ въпрос</button>
+  </div>
+
+  <script>
+  (async function(){
+    const startScreen = document.getElementById('start-screen');
+    const playerInput = document.getElementById('player-name');
+    const startBtn = document.getElementById('start-btn');
+    const showLastBtn = document.getElementById('show-last-btn');
+    const lastResultDiv = document.getElementById('last-result');
+
+    const qText = document.getElementById('question');
+    const answersDiv = document.getElementById('answers');
+    const nextBtn = document.getElementById('next-btn');
+    const status = document.getElementById('status');
+    const timerDisplay = document.getElementById('timer');
+    const quizDiv = document.getElementById('quiz');
+
+    let playerName = '';
+    let questions = [];
+    let idx = 0;
+    let score = 0;
+    let timeLeft = 15;
+    let timer;
+
+    // Зареждане на въпросите
+    try {
+      const res = await fetch('questions.json');
+      questions = await res.json();
+    } catch(err) {
+      qText.textContent = 'Грешка при зареждане на въпросите.';
+      console.error(err);
+      return;
+    }
+
+    // Проверка за последен резултат при зареждане
+    const last = JSON.parse(localStorage.getItem('lastResult'));
+    if (last) {
+      lastResultDiv.innerHTML = `<b>Последен резултат:</b><br>${last.name} — ${last.score}/${last.total} (${last.percent}%)<br><small>${last.date}</small>`;
+    }
+
+    function normalize(s){ return String(s).trim(); }
+
+    function startTimer(){
+      clearInterval(timer);
+      timeLeft = 15; // ⏱ промени тук времето за всеки въпрос
+      timerDisplay.textContent = `Оставащо време: ${timeLeft} сек.`;
+      timer = setInterval(()=>{
+        timeLeft--;
+        timerDisplay.textContent = `Оставащо
