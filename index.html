@@ -104,4 +104,95 @@ if ('serviceWorker' in navigator) {
       timerDisplay.textContent = `Оставащо време: ${timeLeft} сек.`;
       timer = setInterval(()=>{
         timeLeft--;
-        timerDisplay.textContent = `Оставащо
+        timerDisplay.textContent = `Оставащо време: ${timeLeft} сек.`;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          lockAnswers();
+          status.textContent = '⏰ Времето изтече!';
+          nextBtn.disabled = false;
+        }
+      },1000);
+    }
+
+    function lockAnswers(){
+      Array.from(answersDiv.children).forEach(btn => btn.disabled = true);
+    }
+
+    function renderQuestion(i){
+      const q = questions[i];
+      qText.textContent = `${i+1}. ${q.question}`;
+      answersDiv.innerHTML = '';
+      status.textContent = '';
+      nextBtn.disabled = true;
+
+      q.answers.forEach(ans => {
+        const btn = document.createElement('button');
+        btn.textContent = ans;
+        btn.onclick = ()=>{
+          lockAnswers();
+          clearInterval(timer);
+          const correct = normalize(q.correct);
+          const chosen = normalize(ans);
+          if (chosen === correct) {
+            btn.classList.add('correct');
+            status.textContent = '✅ Верен отговор!';
+            score++;
+          } else {
+            btn.classList.add('wrong');
+            status.textContent = `❌ Грешен. Верният отговор е: ${q.correct}`;
+            Array.from(answersDiv.children).forEach(b=>{
+              if (normalize(b.textContent) === correct) b.classList.add('correct');
+            });
+          }
+          nextBtn.disabled = false;
+        };
+        answersDiv.appendChild(btn);
+      });
+
+      startTimer();
+    }
+
+    nextBtn.addEventListener('click', ()=>{
+      idx++;
+      if (idx >= questions.length) {
+        clearInterval(timer);
+        const percent = Math.round((score / questions.length) * 100);
+        const resultText = `🏁 Край на теста, <b>${playerName}</b>!<br><br>Резултат: <b>${score}</b> от <b>${questions.length}</b> (${percent}%).`;
+
+        // 💾 Записваме последния резултат
+        const record = { name: playerName, score, total: questions.length, percent, date: new Date().toLocaleString('bg-BG') };
+        localStorage.setItem('lastResult', JSON.stringify(record));
+
+        qText.innerHTML = resultText;
+        answersDiv.innerHTML = '';
+        status.textContent = '';
+        nextBtn.disabled = true;
+        timerDisplay.textContent = '';
+        return;
+      }
+      renderQuestion(idx);
+    });
+
+    startBtn.addEventListener('click', ()=>{
+      playerName = playerInput.value.trim();
+      if (!playerName) {
+        alert('Моля, въведете име на отбора.');
+        return;
+      }
+      startScreen.style.display = 'none';
+      quizDiv.style.display = 'block';
+      renderQuestion(0);
+    });
+
+    showLastBtn.addEventListener('click', ()=>{
+      const last = JSON.parse(localStorage.getItem('lastResult'));
+      if (last) {
+        lastResultDiv.innerHTML = `<b>Последен резултат:</b><br>${last.name} — ${last.score}/${last.total} (${last.percent}%)<br><small>${last.date}</small>`;
+      } else {
+        lastResultDiv.innerHTML = 'Няма записан резултат.';
+      }
+    });
+  })();
+  </script>
+</body>
+</html>
