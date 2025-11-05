@@ -1,5 +1,5 @@
 {
-  "name": "Светкавичен куиз",
+  "name": "Игри на Знания",
   "short_name": "Игри на Знания",
   "start_url": "./index.html",
   "display": "standalone",
@@ -18,4 +18,5 @@
     }
   ]
 }
+
 
