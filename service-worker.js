@@ -1,4 +1,4 @@
-const CACHE_NAME = 'quiz-cache-v9';
+const CACHE_NAME = 'quiz-cache-v10';
 const urlsToCache = [
   './',
   './index.html',
@@ -31,6 +31,7 @@ self.addEventListener('fetch', event => {
     })
   );
 });
+
 
 
 
