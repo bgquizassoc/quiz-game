@@ -1,4 +1,4 @@
-<!doctype html>
+startrimer<!doctype html>
 <html lang="bg">
 <head>
   <meta charset="utf-8" />
@@ -242,16 +242,22 @@ body {
 
     function startTimer(){
       clearInterval(timer);
-      timeLeft = 15; // ⏱ промени тук времето за всеки въпрос
-      timerDisplay.textContent = `Оставащо време: ${timeLeft} сек.`;
-      timer = setInterval(()=>{
-        timeLeft--;
-        timerDisplay.textContent = `Оставащо време: ${timeLeft} сек.`;
-        if (timeLeft <= 0) {
-          clearInterval(timer);
-          lockAnswers();
-          status.textContent = '⏰ Времето изтече!';
-          nextBtn.disabled = false;
+  timeLeft = 20; // ⏱ промени тук времето за всеки въпрос
+  timerDisplay.textContent = `Оставащо време: ${timeLeft} сек.`;
+  timerDisplay.classList.remove('warning');
+
+  timer = setInterval(()=>{
+    timeLeft--;
+    timerDisplay.textContent = `Оставащо време: ${timeLeft} сек.`;
+
+    if (timeLeft <= 5) timerDisplay.classList.add('warning'); // 🔥 светва червено
+    if (timeLeft > 5) timerDisplay.classList.remove('warning');
+
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      lockAnswers();
+      status.textContent = '⏰ Времето изтече!';
+      nextBtn.disabled = false;
         }
       },1000);
     }
@@ -338,6 +344,7 @@ body {
   </script>
 </body>
 </html>
+
 
 
 
