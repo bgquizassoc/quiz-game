@@ -10,31 +10,137 @@ if ('serviceWorker' in navigator) {
 }
 </script>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 720px; margin: 40px auto; line-height: 1.6; }
-    h1 { text-align: center; }
-    #question { font-size: 1.3em; margin-bottom: 20px; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: linear-gradient(180deg, #111, #222);
+      color: #f8f8f8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffd100;
+      font-size: 2.2em;
+      margin-top: 20px;
+      text-shadow: 0 0 6px #ffb400;
+    }
+
+    #quiz, #start-screen {
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+      margin-top: 30px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(255, 209, 0, 0.2);
+    }
+
+    #question {
+      font-size: 1.4em;
+      margin: 20px 0;
+      font-weight: 600;
+    }
+
     .answers button {
       display: block;
       width: 100%;
-      margin: 8px 0;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+      margin: 10px 0;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
       cursor: pointer;
-      font-size: 1em;
-      background: #f5f5f5;
-      transition: background 0.3s;
+      font-size: 1.1em;
+      background: #333;
+      color: #fff;
+      transition: all 0.2s ease;
     }
-    .answers button:hover { background: #e0e0e0; }
-    .answers button.correct { background: #c8e6c9; border-color: #4caf50; }
-    .answers button.wrong { background: #ffcdd2; border-color: #f44336; }
-    #status { margin-top: 10px; font-weight: bold; }
-    #timer { text-align: right; font-weight: bold; margin-bottom: 10px; }
-    #next-btn { margin-top: 20px; padding: 8px 14px; font-size: 1em; }
-    ul { padding-left: 20px; }
-    #start-screen { text-align: center; margin-top: 40px; }
-    input { padding: 8px; font-size: 1em; width: 70%; max-width: 300px; }
-    button.start, button.show { margin-top: 15px; padding: 10px 16px; font-size: 1em; }
+
+    .answers button:hover {
+      background: #444;
+      transform: scale(1.02);
+    }
+
+    .answers button.correct {
+      background: #2e7d32;
+    }
+
+    .answers button.wrong {
+      background: #b71c1c;
+    }
+
+    #timer {
+      text-align: right;
+      font-weight: bold;
+      color: #ffd100;
+      margin-bottom: 10px;
+      font-size: 1.1em;
+    }
+
+    #status {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 1.1em;
+      min-height: 30px;
+    }
+
+    #next-btn {
+      margin-top: 25px;
+      padding: 12px 18px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 8px;
+      background: #ffd100;
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    #next-btn:hover {
+      background: #ffcc33;
+      transform: scale(1.05);
+    }
+
+    input {
+      padding: 10px;
+      font-size: 1.1em;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 80%;
+      margin-bottom: 10px;
+    }
+
+    button.start, button.show {
+      margin-top: 10px;
+      padding: 12px 20px;
+      font-size: 1.1em;
+      border-radius: 8px;
+      border: none;
+      background: #ffd100;
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button.start:hover, button.show:hover {
+      background: #ffcc33;
+      transform: scale(1.05);
+    }
+
+    #last-result {
+      margin-top: 15px;
+      font-size: 1.1em;
+      color: #ddd;
+    }
   </style>
 </head>
 <body>
@@ -196,6 +302,7 @@ if ('serviceWorker' in navigator) {
   </script>
 </body>
 </html>
+
 
 
 
