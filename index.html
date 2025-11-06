@@ -82,13 +82,20 @@ if ('serviceWorker' in navigator) {
     }
 
     #timer {
-      text-align: right;
-      font-weight: bold;
-      color: #ffd100;
-      margin-bottom: 10px;
-      font-size: 1.1em;
+     text-align: center;
+  font-weight: 800;
+  color: #ffeb3b;
+  margin: 20px 0;
+  font-size: clamp(1.8em, 5vw, 2.6em);
+  text-shadow: 0 0 12px #ffcc00, 0 0 20px #ffcc00;
+  letter-spacing: 2px;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
     }
 
+#timer.warning {
+  color: #ff4c4c;
+  text-shadow: 0 0 14px #ff0000, 0 0 25px #ff0000;
+}
     #status {
       margin-top: 10px;
       font-weight: bold;
@@ -331,6 +338,7 @@ body {
   </script>
 </body>
 </html>
+
 
 
 
