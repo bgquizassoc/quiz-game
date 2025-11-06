@@ -2,6 +2,7 @@
 <html lang="bg">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>⚡Игри на Знания - Светкавичен куиз ⚡</title>
 <link rel="manifest" href="manifest.json">
 <script>
@@ -141,6 +142,30 @@ if ('serviceWorker' in navigator) {
       font-size: 1.1em;
       color: #ddd;
     }
+    html, body {
+  width: 100%;
+  overflow-x: hidden; /* 🚫 няма хоризонтално скролиране */
+}
+
+body {
+  font-size: 18px; /* по-голям базов размер на текст */
+}
+
+.answers button {
+  font-size: 1.2em;
+  padding: 16px;
+}
+
+#question {
+  font-size: 1.6em;
+}
+
+#quiz, #start-screen {
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  border-radius: 0; /* може и с това да е по-чисто на мобилен */
+}
   </style>
 </head>
 <body>
@@ -302,6 +327,7 @@ if ('serviceWorker' in navigator) {
   </script>
 </body>
 </html>
+
 
 
 
