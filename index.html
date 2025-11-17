@@ -205,7 +205,7 @@ body {
     <button class="show" id="show-last-btn">Покажи последен резултат</button>
     <div id="last-result" style="margin-top:20px;"></div>
   </div>
-
+  
   <div id="quiz" style="display:none;">
     <div id="timer">Оставащо време: 20 сек.</div>
     <div id="question"></div>
@@ -213,6 +213,27 @@ body {
     <div id="status"></div>
     <button id="next-btn" disabled>Следващ въпрос</button>
   </div>
+  <div id="explanation" style="
+    display:none;
+    background: rgba(255,255,255,0.08);
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 12px;
+    max-width: 600px;
+    text-align: center;
+">
+    <div id="explanation-text" style="font-size:1.2em; margin-bottom:20px;"></div>
+
+    <button id="next-question-btn"
+        style="padding:12px 20px; font-size:1.1em; margin-right:10px;">
+        Следващ въпрос
+    </button>
+
+    <button id="close-explanation-btn"
+        style="padding:12px 20px; font-size:1.1em;">
+        Затвори
+    </button>
+</div>
 
   <script>
   (async function(){
@@ -307,6 +328,9 @@ body {
             });
           }
           nextBtn.disabled = false;
+          document.getElementById('explanation-text').innerHTML = q.explanation;
+          document.getElementById('explanation').style.display = 'block';
+          document.getElementById('next-question-btn').style.display = 'inline-block';
         };
         answersDiv.appendChild(btn);
       });
@@ -354,10 +378,32 @@ body {
         lastResultDiv.innerHTML = 'Няма записан резултат.';
       }
     });
+    // 🆕 Бутон "Следващ въпрос"
+document.getElementById('next-question-btn').addEventListener('click', () => {
+    document.getElementById('explanation').style.display = 'none';
+    idx++;
+    if (idx < questions.length) {
+        renderQuestion(idx);
+    } else {
+        clearInterval(timer);
+        const percent = Math.round((score / questions.length) * 100);
+        qText.innerHTML = `🏁 Край на теста, <b>${playerName}</b>!<br><br>Резултат: <b>${score}</b> от <b>${questions.length}</b> (${percent}%).`;
+        answersDiv.innerHTML = '';
+        status.textContent = '';
+        nextBtn.disabled = true;
+        timerDisplay.textContent = '';
+    }
+});
+
+// 🆕 Бутон "Затвори"
+document.getElementById('close-explanation-btn').addEventListener('click', () => {
+    document.getElementById('explanation').style.display = 'none';
+});
   })();
   </script>
 </body>
 </html>
+
 
 
 
