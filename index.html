@@ -387,8 +387,8 @@ function restartGame() {
   // ============================================================
   // 2) Проверка за последен резултат
   // ============================================================
-  const last = JSON.parse(localStorage.getItem('lastResult'));
-  if (last) {
+  const lastSaved = JSON.parse(localStorage.getItem('lastResult'));
+  if (lastSaved) {
     lastResultDiv.innerHTML = 
       `<b>Последен резултат:</b><br>${last.name} — ${last.score}/${last.total} (${last.percent}%)<br><small>${last.date}</small>`;
   }
@@ -667,6 +667,7 @@ document.getElementById("retry-btn").onclick = restartGame;
 </script>
 </body>
 </html>
+
 
 
 
