@@ -191,6 +191,33 @@
     max-width: 600px;
     text-align: center;
   }
+    #explanation button {
+  background: #ffd100;
+  color: #111;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 22px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+#explanation button:hover {
+  background: #ffcc33;
+  transform: scale(1.05);
+}
+
+#explanation {
+  display:none;
+  text-align:center;
+}
+
+#explanation .button-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 12px;
+}
   </style>
 </head>
 
@@ -215,10 +242,7 @@
 
     <br>
 
-    <button class="show" id="show-last-btn">Покажи последен резултат</button>
-
-    <div id="last-result" style="margin-top:20px;"></div>
-  </div>
+      </div>
 
   <div id="quiz" style="display:none;">
     <div id="timer">Оставащо време: 20 сек.</div>
@@ -235,13 +259,10 @@
   <div id="explanation">
     <div id="explanation-text" style="font-size:1.2em; margin-bottom:20px;"></div>
     <div id="history-screen" style="display:none;"></div>
-    <button id="next-question-btn" style="padding:12px 20px; font-size:1.1em; margin-right:10px;">
-      Следващ въпрос
-    </button>
-
-    <button id="close-explanation-btn" style="padding:12px 20px; font-size:1.1em;">
-      Затвори
-    </button>
+   <div class="button-row">
+  <button id="next-question-btn">Следващ въпрос</button>
+  <button id="close-explanation-btn">Затвори</button>
+</div>
   </div>
 <script>
 (async function(){
@@ -611,16 +632,11 @@ return;
 
 // 🔵 добавяме бутоните под финалния екран
 qText.innerHTML += `
-    <br><br>
-    <button id="history-btn" 
-        style="padding:12px 20px; font-size:1.1em; margin-right:10px;">
-        История на играта
-    </button>
-
-    <button id="retry-btn" 
-        style="padding:12px 20px; font-size:1.1em;">
-        Опитай пак
-    </button>
+<br><br>
+<div style="display:flex; justify-content:center; gap:12px; margin-top:20px;">
+    <button id="history-btn" class="yellow-btn">История на играта</button>
+    <button id="retry-btn" class="yellow-btn">Опитай пак</button>
+</div>
 `;
 
 document.getElementById("history-btn").onclick = showHistoryScreen;
@@ -635,5 +651,6 @@ document.getElementById("retry-btn").onclick = restartGame;
 </script>
 </body>
 </html>
+
 
 
