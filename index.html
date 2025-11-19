@@ -14,658 +14,411 @@
   </script>
 
   <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  html, body {
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow-x: hidden; overflow-y: auto; }
 
   body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    font-size: 18px;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: flex-start;
+    font-size: 18px; font-family: 'Segoe UI', Arial, sans-serif;
+    max-width: 900px; margin: 0 auto; padding: 20px;
     background: linear-gradient(180deg, #111, #222);
-    color: #f8f8f8;
-    min-height: 100vh;
+    color: #f8f8f8; min-height: 100vh;
   }
+
   h1 {
-    text-align: center;
-    color: #ffd100;
+    text-align: center; color: #ffd100;
     font-size: clamp(1.5em, 4vw, 2em);
     margin: 10px auto 15px auto;
     text-shadow: 0 0 5px #ffb400;
-    padding: 0 10px;
-    box-sizing: border-box;
-    max-width: 100%;
-    overflow-wrap: break-word;
   }
 
   #quiz, #start-screen {
-    width: 100%;
-    max-width: 600px;
-    text-align: center;
+    width: 100%; max-width: 600px; text-align: center;
     margin-top: 30px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(255, 209, 0, 0.2);
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px; padding: 20px;
+    box-shadow: 0 0 10px rgba(255,209,0,0.2);
   }
 
-  #question {
-    font-size: 1.6em;
-    margin: 20px 0;
-    font-weight: 600;
-  }
+  #question { font-size: 1.6em; margin: 20px 0; font-weight: 600; }
 
   .answers button {
-    display: block;
-    width: 100%;
-    margin: 10px 0;
-    padding: 16px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 1.2em;
-    background: #333;
-    color: #fff;
-    transition: all 0.2s ease;
-  }
-
-  .answers button:hover {
-    background: #444;
-    transform: scale(1.02);
-  }
-
-  .answers button.correct {
-    background: #2e7d32;
-  }
-
-  .answers button.wrong {
-    background: #b71c1c;
-  }
-
-  #timer {
-    text-align: center;
-    font-weight: 800;
-    color: #ffeb3b;
-    margin: 20px 0;
-    font-size: clamp(1.8em, 5vw, 2.6em);
-    text-shadow: 0 0 12px #ffcc00, 0 0 20px #ffcc00;
-    letter-spacing: 2px;
-    transition: color 0.3s ease, text-shadow 0.3s ease;
-  }
-
-  #timer.warning {
-    color: #ff4c4c;
-    text-shadow: 0 0 14px #ff0000, 0 0 25px #ff0000;
-  }
-
-  #status {
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 1.1em;
-    min-height: 30px;
-  }
-
-  #next-btn {
-    margin-top: 25px;
-    padding: 12px 18px;
-    font-size: 1.1em;
-    border: none;
-    border-radius: 8px;
-    background: #ffd100;
-    color: #111;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  #next-btn:hover {
-    background: #ffcc33;
-    transform: scale(1.05);
-  }
-
-  input {
-    padding: 10px;
-    font-size: 1.1em;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    width: 80%;
-    margin-bottom: 10px;
-  }
-
-  button.start, button.show, button.continue-btn {
-    margin-top: 10px;
-    padding: 12px 20px;
-    font-size: 1.1em;
-    border-radius: 8px;
-    border: none;
-    background: #ffd100;
-    color: #111;
-    font-weight: bold;
-    cursor: pointer;
+    display: block; width: 100%; margin: 10px 0; padding: 16px;
+    border: none; border-radius: 10px; cursor: pointer;
+    font-size: 1.2em; background: #333; color: #fff;
     transition: 0.2s;
   }
 
-  button.start:hover,
-  button.show:hover,
-  button.continue-btn:hover {
-    background: #ffcc33;
-    transform: scale(1.05);
+  .answers button:hover { background: #444; transform: scale(1.02); }
+  .answers button.correct { background: #2e7d32; }
+  .answers button.wrong { background: #b71c1c; }
+
+  #timer {
+    text-align: center; font-weight: 800; margin: 20px 0;
+    font-size: clamp(1.8em, 5vw, 2.6em);
+    color: #ffeb3b; text-shadow: 0 0 12px #ffcc00;
+  }
+  #timer.warning { color: #ff4c4c; }
+
+  #status { margin-top: 10px; font-weight: bold; min-height: 30px; }
+
+  #next-btn {
+    margin-top: 25px; padding: 12px 18px; font-size: 1.1em;
+    border: none; border-radius: 8px;
+    background: #ffd100; color: #111; font-weight: bold; cursor: pointer;
+  }
+  #next-btn:hover { background:#ffcc33; transform:scale(1.05); }
+
+  input {
+    padding: 10px; font-size: 1.1em; border-radius: 8px;
+    border: 1px solid #ccc; width: 80%; margin-bottom: 10px;
   }
 
-  #last-result {
-    margin-top: 15px;
-    font-size: 1.1em;
-    color: #ddd;
+  button.start, button.continue-btn {
+    margin-top: 10px; padding: 12px 20px; font-size: 1.1em;
+    border-radius: 8px; border: none;
+    background: #ffd100; color: #111; font-weight: bold; cursor: pointer;
+  }
+  button.start:hover, button.continue-btn:hover {
+    background:#ffcc33; transform:scale(1.05);
   }
 
   #current-score {
-    margin: 15px 0;
-    font-size: 1.3em;
-    color: #ffd100;
-    font-weight: bold;
-    display: none;
+    margin: 15px 0; font-size: 1.3em;
+    color: #ffd100; font-weight: bold; display: none;
   }
 
   #explanation {
-    display:none;
-    background: rgba(255,255,255,0.08);
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 12px;
-    max-width: 600px;
-    text-align: center;
+    display:none; background:rgba(255,255,255,0.08);
+    padding:20px; margin-top:20px;
+    border-radius:12px; max-width:600px; text-align:center;
   }
-    #explanation button {
-  background: #ffd100;
-  color: #111;
-  font-weight: bold;
-  border: none;
-  border-radius: 10px;
-  padding: 14px 22px;
-  cursor: pointer;
-  margin: 10px;
-}
 
-#explanation button:hover {
-  background: #ffcc33;
-  transform: scale(1.05);
-}
+  #explanation .button-row {
+    display:flex; justify-content:center; gap:12px; margin-top:20px;
+  }
 
-#explanation {
-  display:none;
-  text-align:center;
-}
-
-#explanation .button-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 12px;
-}
-.yellow-btn {
-  background: #ffd100;
-  color: #111;
-  padding: 14px 22px;
-  font-size: 1.1em;
-  border-radius: 10px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.yellow-btn:hover {
-  background: #ffcc33;
-  transform: scale(1.05);
-}    
+  .yellow-btn {
+    background:#ffd100; color:#111;
+    padding:14px 22px; font-size:1.1em;
+    border-radius:10px; border:none; font-weight:bold; cursor:pointer;
+  }
+  .yellow-btn:hover { background:#ffcc33; transform:scale(1.05); }
   </style>
 </head>
 
 <body>
-  <audio id="bg-music" src="music.mp3" loop preload="auto"></audio>
-  <h1> Игри на Знания <br> ⚡ Светкавичен куиз ⚡ <br>⚡ епизод 1 ⚡</h1>
+<audio id="bg-music" src="music.mp3" loop preload="auto"></audio>
 
-  <div id="start-screen">
-    <p>Въведете Вашето име:</p>
+<h1>Игри на Знания<br>⚡ Светкавичен куиз ⚡<br>⚡ епизод 1 ⚡</h1>
 
-    <input type="text" id="player-name" placeholder="Име ..." />
+<div id="start-screen">
+  <p>Въведете Вашето име:</p>
 
-    <br>
+  <input type="text" id="player-name" placeholder="Име ..." /><br>
 
-    <button class="start" id="start-btn">Започни!</button>
+  <button class="start" id="start-btn">Започни!</button><br>
 
-    <br>
+  <button class="continue-btn" id="continue-btn" style="display:none;">
+    Продължи от мястото, където спряхте
+  </button>
 
-    <!-- 🆕 Бутон: Продължи незавършена игра -->
-    <button class="continue-btn" id="continue-btn" style="display:none;">
-      Продължи от мястото, където спряхте
-    </button>
-
-    <br>
-  <div id="last-result"></div> <!-- ТОВА ЛИПСВАШЕ -->
-      </div>
-
-  <div id="quiz" style="display:none;">
-    <div id="timer">Оставащо време: 20 сек.</div>
-    <div id="question"></div>
-    <div id="answers" class="answers"></div>
-    <div id="status"></div>
-
-    <button id="next-btn" disabled>Следващ въпрос</button>
-
-    <div id="current-score"></div>
-
-  </div>
-
-  <div id="explanation">
-    <div id="explanation-text" style="font-size:1.2em; margin-bottom:20px;"></div>
-    <div id="history-screen" style="display:none;"></div>
-   <div class="button-row">
-  <button id="next-question-btn">Следващ въпрос</button>
-  <button id="close-explanation-btn">Затвори</button>
+  <div id="last-result" style="margin-top:15px;"></div>
 </div>
+
+<div id="quiz" style="display:none;">
+  <div id="timer">Оставащо време: 20 сек.</div>
+  <div id="question"></div>
+  <div id="answers" class="answers"></div>
+  <div id="status"></div>
+  <button id="next-btn" disabled>Следващ въпрос</button>
+  <div id="current-score"></div>
+</div>
+
+<div id="explanation">
+  <div id="explanation-text" style="font-size:1.2em; margin-bottom:20px;"></div>
+
+  <div class="button-row">
+    <button id="next-question-btn" class="yellow-btn">Следващ въпрос</button>
+    <button id="close-explanation-btn" class="yellow-btn">Затвори</button>
   </div>
+</div>
+
 <script>
 (async function(){
 
-  const startScreen = document.getElementById('start-screen');
-  const playerInput = document.getElementById('player-name');
-  const startBtn = document.getElementById('start-btn');
-  const continueBtn = document.getElementById('continue-btn');
-  const lastResultDiv = document.getElementById('last-result');
+const startScreen = document.getElementById('start-screen');
+const playerInput = document.getElementById('player-name');
+const startBtn = document.getElementById('start-btn');
+const continueBtn = document.getElementById('continue-btn');
+const lastResultDiv = document.getElementById('last-result');
 
-  const qText = document.getElementById('question');
-  const answersDiv = document.getElementById('answers');
-  const nextBtn = document.getElementById('next-btn');
-  const status = document.getElementById('status');
-  const timerDisplay = document.getElementById('timer');
-  const currentScoreDiv = document.getElementById('current-score');
+const qText = document.getElementById('question');
+const answersDiv = document.getElementById('answers');
+const nextBtn = document.getElementById('next-btn');
+const status = document.getElementById('status');
+const timerDisplay = document.getElementById('timer');
+const currentScoreDiv = document.getElementById('current-score');
 
-  const quizDiv = document.getElementById('quiz');
-  const explanationDiv = document.getElementById('explanation');
-  const explanationText = document.getElementById('explanation-text');
-  const bgMusic = document.getElementById("bg-music");
+const quizDiv = document.getElementById('quiz');
+const explanationDiv = document.getElementById('explanation');
+const explanationText = document.getElementById('explanation-text');
+const bgMusic = document.getElementById("bg-music");
 
-  let playerName = '';
-  let questions = [];
-  let idx = 0;
-  let score = 0;
-  let timeLeft = 20;
-  let timer;
-// === История на играта =====================================
+let playerName = '';
+let questions = [];
+let idx = 0;
+let score = 0;
+let timeLeft = 20;
+let timer;
 
-// масив в който ще пазим всички въпроси, отговори и обяснения
+// История
 let gameHistory = [];
 
-// показва историята
 function showHistoryScreen() {
-    document.getElementById("quiz").style.display = "none";
-    document.getElementById("explanation").style.display = "none";
-    document.getElementById("start-screen").style.display = "none";
+  quizDiv.style.display = "none";
+  explanationDiv.style.display = "none";
+  startScreen.style.display = "none";
 
-    let historyDiv = document.getElementById("history-screen");
-    if (!historyDiv) {
-        historyDiv = document.createElement("div");
-        historyDiv.id = "history-screen";
-        historyDiv.style.padding = "20px";
-        historyDiv.style.maxWidth = "600px";
-        historyDiv.style.marginTop = "20px";
-        historyDiv.style.background = "rgba(255,255,255,0.08)";
-        historyDiv.style.borderRadius = "12px";
-        historyDiv.style.textAlign = "left";
-        historyDiv.style.display = "block";
+  let historyDiv = document.getElementById("history-screen");
+  if (!historyDiv) {
+    historyDiv = document.createElement("div");
+    historyDiv.id = "history-screen";
+    historyDiv.style.padding = "20px";
+    historyDiv.style.maxWidth = "600px";
+    historyDiv.style.marginTop = "20px";
+    historyDiv.style.background = "rgba(255,255,255,0.08)";
+    historyDiv.style.borderRadius = "12px";
+    historyDiv.style.textAlign = "left";
 
-        document.body.appendChild(historyDiv);
-    }
+    document.body.appendChild(historyDiv);
+  }
 
-    historyDiv.innerHTML = "<h2>📘 История на играта</h2><br>";
+  historyDiv.innerHTML = "<h2>📘 История на играта</h2><br>";
 
-    gameHistory.forEach((h, i) => {
-        historyDiv.innerHTML += `
-            <div style="
-                margin-bottom:20px;
-                padding-bottom:10px;
-                border-bottom:1px solid #444;
-            ">
-                <div><b>${i+1}. ${h.question}</b></div><br>
-                <div>Твоят отговор: 
-                    <span style="color:${h.correct ? '#2ecc71' : '#e74c3c'}">
-                        ${h.yourAnswer}
-                    </span>
-                </div>
-                <div>Верен отговор: <b style="color:#2ecc71">${h.correctAnswer}</b></div>
-                <div style="margin-top:10px; color:#ddd">
-                    <i>${h.explanation}</i>
-                </div>
-            </div>
-        `;
-    });
-
-    // бутон "Опитай пак"
+  gameHistory.forEach((h, i) => {
     historyDiv.innerHTML += `
-        <button id="retry2-btn" 
-            style="padding:12px 20px; font-size:1.1em; margin-top:20px;">
-            Опитай пак
-        </button>
+      <div style="margin-bottom:20px; padding-bottom:10px; border-bottom:1px solid #444;">
+        <b>${i+1}. ${h.question}</b><br><br>
+        Твоят отговор: <span style="color:${h.correct?'#2ecc71':'#e74c3c'}">${h.yourAnswer}</span><br>
+        Верен отговор: <b style="color:#2ecc71">${h.correctAnswer}</b><br>
+        <div style="margin-top:10px;color:#ddd"><i>${h.explanation}</i></div>
+      </div>
     `;
+  });
 
-    document.getElementById("retry2-btn").onclick = restartGame;
+  historyDiv.innerHTML += `
+    <button id="retry2-btn" class="yellow-btn" style="margin-top:20px;">Опитай пак</button>
+  `;
+
+  document.getElementById("retry2-btn").onclick = restartGame;
 }
 
-// връща към началния екран
 function restartGame() {
-    localStorage.removeItem("currentProgress");
-    location.reload();
+  localStorage.removeItem("progress");
+  location.reload();
 }
 
-  // ============================================================
-  // 1) Зареждане на въпросите
-  // ============================================================
-  try {
-    const res = await fetch('questions.json');
-    questions = await res.json();
-  } catch(err) {
-    qText.textContent = 'Грешка при зареждане на въпросите.';
-    console.error(err);
-    return;
-  }
+// Зареждане на въпроси
+try {
+  const res = await fetch('questions.json');
+  questions = await res.json();
+} catch(e) {
+  qText.textContent = "Грешка при зареждане на въпросите.";
+  return;
+}
 
-  // ============================================================
-  // 2) Проверка за последен резултат
-  // ============================================================
- 
+// Последен резултат
+const last = JSON.parse(localStorage.getItem('lastResult'));
+if (last) {
+  lastResultDiv.innerHTML =
+    `<b>Последен резултат:</b><br>${last.name} — ${last.score}/${last.total} (${last.percent}%)<br>
+     <small>${last.date}</small>`;
+}
 
-  // ============================================================
-  // 3) Проверка за незавършена игра
-  // ============================================================
-  const saved = JSON.parse(localStorage.getItem('progress'));
-  if (saved && saved.idx < questions.length) {
-    continueBtn.style.display = 'inline-block';
-    continueBtn.textContent = `Продължи от мястото, където спряхте (въпрос ${saved.idx + 1})`;
-  }
+// Продължаване на игра
+const saved = JSON.parse(localStorage.getItem('progress'));
+if (saved && saved.idx < questions.length) {
+  continueBtn.style.display = "inline-block";
+  continueBtn.textContent = `Продължи от въпрос ${saved.idx + 1}`;
+}
 
-  function normalize(s){ return String(s).trim(); }
+function normalize(s){ return String(s).trim(); }
 
-  // ============================================================
-  // 4) Стартиране на таймера
-  // ============================================================
-  function startTimer(){
-    clearInterval(timer);
-    timeLeft = 20;
+// Таймер
+function startTimer() {
+  clearInterval(timer);
+  timeLeft = 20;
+  timerDisplay.textContent = `Оставащо време: ${timeLeft} сек.`;
+  timerDisplay.classList.remove("warning");
+
+  timer = setInterval(() => {
+    timeLeft--;
     timerDisplay.textContent = `Оставащо време: ${timeLeft} сек.`;
-    timerDisplay.classList.remove('warning');
 
-    timer = setInterval(()=>{
-      timeLeft--;
-      timerDisplay.textContent = `Оставащо време: ${timeLeft} сек.`;
+    if (timeLeft <= 5) timerDisplay.classList.add("warning");
 
-      if (timeLeft <= 5) timerDisplay.classList.add('warning');
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      lockAnswers();
+      status.textContent = "⏰ Времето изтече!";
+      nextBtn.disabled = false;
+    }
+  }, 1000);
+}
 
-      if (timeLeft <= 0) {
-        clearInterval(timer);
-        lockAnswers();
-        status.textContent = '⏰ Времето изтече!';
-        nextBtn.disabled = false;
+function lockAnswers() {
+  Array.from(answersDiv.children).forEach(b => b.disabled = true);
+}
+
+// Рендер на въпрос
+function renderQuestion(i) {
+  const q = questions[i];
+
+  qText.textContent = `${i+1}. ${q.question}`;
+  answersDiv.innerHTML = "";
+  status.textContent = "";
+  nextBtn.disabled = true;
+  explanationDiv.style.display = "none";
+
+  currentScoreDiv.style.display = "none";
+
+  q.answers.forEach(ans => {
+    const btn = document.createElement("button");
+    btn.textContent = ans;
+
+    btn.onclick = () => {
+      lockAnswers();
+      clearInterval(timer);
+
+      const correct = normalize(q.correct);
+      const chosen = normalize(ans);
+
+      if (chosen === correct) {
+        btn.classList.add("correct");
+        status.textContent = "✅ Верен отговор!";
+        score++;
+      } else {
+        btn.classList.add("wrong");
+        status.textContent = `❌ Грешно! Верният отговор е: ${q.correct}`;
+        Array.from(answersDiv.children).forEach(b => {
+          if (normalize(b.textContent) === correct) b.classList.add("correct");
+        });
       }
-    },1000);
-  }
 
-  function lockAnswers(){
-    Array.from(answersDiv.children).forEach(btn => btn.disabled = true);
-  }
+      gameHistory.push({
+        question: q.question,
+        yourAnswer: ans,
+        correctAnswer: q.correct,
+        correct: chosen === correct,
+        explanation: q.explanation
+      });
 
-  // ============================================================
-  // 5) Рендиране на въпрос
-  // ============================================================
-  function renderQuestion(i){
-    const q = questions[i];
+      currentScoreDiv.textContent = `Текущ резултат: ${score} точки`;
+      currentScoreDiv.style.display = "block";
 
-    qText.textContent = `${i+1}. ${q.question}`;
-    answersDiv.innerHTML = '';
-    status.textContent = '';
-    nextBtn.disabled = true;
+      explanationText.innerHTML = q.explanation;
+      explanationDiv.style.display = "block";
 
-    // скриваме текущия резултат докато не се отговори
-    currentScoreDiv.style.display = 'none';
+      nextBtn.disabled = false;
 
-    q.answers.forEach(ans => {
-      const btn = document.createElement('button');
-      btn.textContent = ans;
-
-      btn.onclick = ()=>{
-        lockAnswers();
-        clearInterval(timer);
-
-        const correct = normalize(q.correct);
-        const chosen = normalize(ans);
-
-        if (chosen === correct) {
-          btn.classList.add('correct');
-          status.textContent = '✅ Верен отговор!';
-          score++;
-        } else {
-          btn.classList.add('wrong');
-          status.textContent = `❌ Грешен. Верният отговор е: ${q.correct}`;
-          Array.from(answersDiv.children).forEach(b=>{
-            if (normalize(b.textContent) === correct) b.classList.add('correct');
-          });
-        }
-// добавяне в историята
-gameHistory.push({
-    question: q.question,
-    yourAnswer: ans,
-    correctAnswer: q.correct,
-    correct: chosen === correct,
-    explanation: q.explanation
-});
-
-        // 🟡 Показваме временния резултат
-        currentScoreDiv.textContent = `Текущ резултат: ${score} точки`;
-        currentScoreDiv.style.display = 'block';
-
-        // 🟣 Показваме обяснението
-        explanationText.innerHTML = q.explanation;
-        explanationDiv.style.display = 'block';
-
-        nextBtn.disabled = false;
-
-        // 💾 Запазваме ПРОГРЕСА
-        localStorage.setItem('progress', JSON.stringify({
-          name: playerName,
-          idx: i,
-          score: score
-        }));
-      };
-
-      answersDiv.appendChild(btn);
-    });
-
-    startTimer();
-  }
-
-  // ============================================================
-  // 6) Продължи незавършена игра
-  // ============================================================
-  continueBtn.addEventListener('click', () => {
-    try { bgMusic.play(); } catch(e) {}
-    playerName = saved.name;
-    idx = saved.idx;
-    score = saved.score;
-
-    playerInput.value = playerName;
-
-    startScreen.style.display = 'none';
-    quizDiv.style.display = 'block';
-
-    renderQuestion(idx);
-  });
-
-  // ============================================================
-  // 7) Обикновено стартиране на игра
-  // ============================================================
-  startBtn.addEventListener('click', ()=>{
-    try { bgMusic.play(); } catch(e) {}
-    playerName = playerInput.value.trim();
-    if (!playerName) {
-      alert('Моля, въведете име на отбора.');
-      return;
-    }
-
-    startScreen.style.display = 'none';
-    quizDiv.style.display = 'block';
-
-    idx = 0;
-    score = 0;
-
-    // изчистваме стар прогрес
-    localStorage.removeItem('progress');
-
-    renderQuestion(0);
-  });
-
-  // ============================================================
-  // 8) Бутон „Следващ въпрос“
-  // ============================================================
-  nextBtn.addEventListener('click', ()=>{
-    explanationDiv.style.display = 'none';
-
-    idx++;
-
-    if (idx >= questions.length) {
-      clearInterval(timer);
-
-      const percent = Math.round((score / questions.length) * 100);
-
-      qText.innerHTML =
-        `🏁 Край на теста, <b>${playerName}</b>!<br><br>` +
-        `Резултат: <b>${score}</b> от <b>${questions.length}</b> (${percent}%).`;
-
-      answersDiv.innerHTML = '';
-      status.textContent = '';
-      nextBtn.disabled = true;
-      timerDisplay.textContent = '';
-      currentScoreDiv.style.display = 'none';
-
-      // 💾 запис на резултата
-      const record = {
+      localStorage.setItem("progress", JSON.stringify({
         name: playerName,
-        score,
-        total: questions.length,
-        percent,
-        date: new Date().toLocaleString('bg-BG')
-      };
-      localStorage.setItem('lastResult', JSON.stringify(record));
-
-      // 🧹 трием прогреса, защото е завършено
-      localStorage.removeItem('progress');
-
-     // 🔵 добавяме бутоните под резултата
-qText.innerHTML += `
-    <br><br>
-    <button id="history-btn" 
-        style="padding:12px 20px; font-size:1.1em; margin-right:10px;">
-        История на играта
-    </button>
-
-    <button id="retry-btn" 
-        style="padding:12px 20px; font-size:1.1em;">
-        Опитай пак
-    </button>
-`;
-
-// свързваме бутоните
-document.getElementById("history-btn").onclick = showHistoryScreen;
-document.getElementById("retry-btn").onclick = restartGame;
-
-return;
-    }
-
-    renderQuestion(idx);
-  });
-
-  // ============================================================
-  // 9) Показване на последен резултат
-  // ============================================================
-    
-
-
-  // ============================================================
-  // 10) Бутони за обяснение
-  // ============================================================
-  document.getElementById('next-question-btn').addEventListener('click', () => {
-    explanationDiv.style.display = 'none';
-
-    idx++;
-    if (idx < questions.length) {
-      renderQuestion(idx);
-    } else {
-      clearInterval(timer);
-      const percent = Math.round((score / questions.length) * 100);
-
-      qText.innerHTML =
-        `🏁 Край на теста, <b>${playerName}</b>!<br><br>` +
-        `Резултат: <b>${score}</b> от <b>${questions.length}</b> (${percent}%).`;
-
-      answersDiv.innerHTML = '';
-      status.textContent = '';
-      nextBtn.disabled = true;
-      timerDisplay.textContent = '';
-
-      localStorage.setItem('lastResult', JSON.stringify({
-        name: playerName,
-        score,
-        total: questions.length,
-        percent,
-        date: new Date().toLocaleString('bg-BG')
+        idx: i,
+        score
       }));
+    };
 
-      localStorage.removeItem('progress');
-    }
-
-// 🔵 добавяме бутоните под финалния екран
-qText.innerHTML += `
-<br><br>
-<div style="display:flex; justify-content:center; gap:12px; margin-top:20px;">
-    <button id="history-btn" class="yellow-btn">История на играта</button>
-    <button id="retry-btn" class="yellow-btn">Опитай пак</button>
-</div>
-`;
-
-document.getElementById("history-btn").onclick = showHistoryScreen;
-document.getElementById("retry-btn").onclick = restartGame;
+    answersDiv.appendChild(btn);
   });
 
-  document.getElementById('close-explanation-btn').addEventListener('click', () => {
-    explanationDiv.style.display = 'none';
-  });
+  startTimer();
+}
 
+// Продължи игра
+continueBtn.onclick = () => {
+  try { bgMusic.play(); } catch(e){}
+  playerName = saved.name;
+  idx = saved.idx;
+  score = saved.score;
+
+  startScreen.style.display = "none";
+  quizDiv.style.display = "block";
+  renderQuestion(idx);
+};
+
+// Старт
+startBtn.onclick = () => {
+  try { bgMusic.play(); } catch(e){}
+  playerName = playerInput.value.trim();
+  if (!playerName) return alert("Въведете име!");
+
+  localStorage.removeItem("progress");
+
+  startScreen.style.display = "none";
+  quizDiv.style.display = "block";
+  
+  idx = 0;
+  score = 0;
+
+  renderQuestion(0);
+};
+
+// Следващ въпрос от бутон
+nextBtn.onclick = nextQuestionFromExplanation;
+document.getElementById("next-question-btn").onclick = nextQuestionFromExplanation;
+
+function nextQuestionFromExplanation() {
+  explanationDiv.style.display = "none";
+  idx++;
+
+  if (idx >= questions.length) return finishGame();
+
+  renderQuestion(idx);
+}
+
+function finishGame() {
+  clearInterval(timer);
+
+  const percent = Math.round(score / questions.length * 100);
+
+  qText.innerHTML =
+    `🏁 Край на играта, <b>${playerName}</b>!<br><br>
+    Резултат: <b>${score}</b> от <b>${questions.length}</b> (${percent}%).<br><br>`;
+
+  answersDiv.innerHTML = "";
+  nextBtn.disabled = true;
+  timerDisplay.textContent = "";
+  currentScoreDiv.style.display = "none";
+
+  localStorage.setItem("lastResult", JSON.stringify({
+    name: playerName,
+    score,
+    total: questions.length,
+    percent,
+    date: new Date().toLocaleString('bg-BG')
+  }));
+
+  localStorage.removeItem("progress");
+
+  qText.innerHTML += `
+    <div style="display:flex; justify-content:center; gap:12px; margin-top:20px;">
+      <button id="history-btn" class="yellow-btn">История на играта</button>
+      <button id="retry-btn" class="yellow-btn">Опитай пак</button>
+    </div>
+  `;
+
+  document.getElementById("history-btn").onclick = showHistoryScreen;
+  document.getElementById("retry-btn").onclick = restartGame;
+}
+
+document.getElementById("close-explanation-btn").onclick = () => {
+  explanationDiv.style.display = "none";
+};
+
+})();
 </script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
