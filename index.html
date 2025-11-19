@@ -390,7 +390,7 @@ function restartGame() {
   const lastSaved = JSON.parse(localStorage.getItem('lastResult'));
   if (lastSaved) {
     lastResultDiv.innerHTML = 
-      `<b>Последен резултат:</b><br>${last.name} — ${last.score}/${last.total} (${last.percent}%)<br><small>${last.date}</small>`;
+      `<b>Последен резултат:</b><br>${lastSaved.name} — ${lastSaved.score}/${lastSaved.total} (${lastSaved.percent}%)<br><small>${lastSaved.date}</small>`;
   }
 
   // ============================================================
@@ -604,13 +604,7 @@ return;
   // ============================================================
   // 9) Показване на последен резултат
   // ============================================================
-    const last = JSON.parse(localStorage.getItem('lastResult'));
-    if (last) {
-      lastResultDiv.innerHTML =
-        `<b>Последен резултат:</b><br>${last.name} — ${last.score}/${last.total} (${last.percent}%)<br><small>${last.date}</small>`;
-    } else {
-      lastResultDiv.innerHTML = 'Няма записан резултат.';
-    }
+    
   });
 
   // ============================================================
@@ -667,6 +661,7 @@ document.getElementById("retry-btn").onclick = restartGame;
 </script>
 </body>
 </html>
+
 
 
 
