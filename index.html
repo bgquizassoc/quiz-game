@@ -41,7 +41,6 @@
     color: #f8f8f8;
     min-height: 100vh;
   }
-
   h1 {
     text-align: center;
     color: #ffd100;
@@ -218,10 +217,26 @@
   justify-content: center;
   gap: 12px;
 }
+.yellow-btn {
+  background: #ffd100;
+  color: #111;
+  padding: 14px 22px;
+  font-size: 1.1em;
+  border-radius: 10px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.yellow-btn:hover {
+  background: #ffcc33;
+  transform: scale(1.05);
+}    
   </style>
 </head>
 
 <body>
+  <audio id="bg-music" src="music.mp3" loop preload="auto"></audio>
   <h1> Игри на Знания <br> ⚡ Светкавичен куиз ⚡ <br>⚡ епизод 1 ⚡</h1>
 
   <div id="start-screen">
@@ -284,6 +299,7 @@
   const quizDiv = document.getElementById('quiz');
   const explanationDiv = document.getElementById('explanation');
   const explanationText = document.getElementById('explanation-text');
+  const bgMusic = document.getElementById("bg-music");
 
   let playerName = '';
   let questions = [];
@@ -490,6 +506,7 @@ gameHistory.push({
   // 6) Продължи незавършена игра
   // ============================================================
   continueBtn.addEventListener('click', () => {
+    try { bgMusic.play(); } catch(e) {}
     playerName = saved.name;
     idx = saved.idx;
     score = saved.score;
@@ -506,6 +523,7 @@ gameHistory.push({
   // 7) Обикновено стартиране на игра
   // ============================================================
   startBtn.addEventListener('click', ()=>{
+    try { bgMusic.play(); } catch(e) {}
     playerName = playerInput.value.trim();
     if (!playerName) {
       alert('Моля, въведете име на отбора.');
@@ -651,6 +669,7 @@ document.getElementById("retry-btn").onclick = restartGame;
 </script>
 </body>
 </html>
+
 
 
 
