@@ -286,7 +286,6 @@
   const playerInput = document.getElementById('player-name');
   const startBtn = document.getElementById('start-btn');
   const continueBtn = document.getElementById('continue-btn');
-  const showLastBtn = document.getElementById('show-last-btn');
   const lastResultDiv = document.getElementById('last-result');
 
   const qText = document.getElementById('question');
@@ -605,7 +604,6 @@ return;
   // ============================================================
   // 9) Показване на последен резултат
   // ============================================================
-  showLastBtn.addEventListener('click', ()=>{
     const last = JSON.parse(localStorage.getItem('lastResult'));
     if (last) {
       lastResultDiv.innerHTML =
@@ -669,6 +667,7 @@ document.getElementById("retry-btn").onclick = restartGame;
 </script>
 </body>
 </html>
+
 
 
 
