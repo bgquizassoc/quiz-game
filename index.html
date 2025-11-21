@@ -105,6 +105,21 @@
     border-radius:10px; border:none; font-weight:bold; cursor:pointer;
   }
   .yellow-btn:hover { background:#ffcc33; transform:scale(1.05); }
+    #timer {
+  text-align: center;
+  font-weight: 800;
+  color: #ffeb3b;
+  margin: 20px 0;
+  font-size: clamp(1.8em, 5vw, 2.6em);
+  text-shadow: 0 0 12px #ffcc00, 0 0 20px #ffcc00;
+  letter-spacing: 1px;
+}
+
+#seconds {
+  display: inline-block;
+  min-width: 70px; /* гарантира, че 9 сек. и 20 сек. заемат еднакво място */
+  text-align: center;
+}
   </style>
 </head>
 
@@ -128,7 +143,10 @@
 </div>
 
 <div id="quiz" style="display:none;">
-  <div id="timer">Оставащо време: <br> 20 сек.</div>
+ <div id="timer">
+  <span class="label">Оставащо време:</span>
+  <span id="seconds">20 сек.</span>
+</div>
   <div id="question"></div>
   <div id="answers" class="answers"></div>
   <div id="status"></div>
@@ -250,13 +268,12 @@ function normalize(s){ return String(s).trim(); }
 function startTimer() {
   clearInterval(timer);
   timeLeft = 20;
-  timerDisplay.textContent = `Оставащо време: ${timeLeft} сек.`;
+  document.getElementById("seconds").textContent = `${timeLeft} сек.`;
   timerDisplay.classList.remove("warning");
 
   timer = setInterval(() => {
     timeLeft--;
-    timerDisplay.textContent = `Оставащо време: ${timeLeft} сек.`;
-
+    document.getElementById("seconds").textContent = `${timeLeft} сек.`;
     if (timeLeft <= 5) timerDisplay.classList.add("warning");
 
     if (timeLeft <= 0) {
@@ -422,6 +439,7 @@ document.getElementById("close-explanation-btn").onclick = () => {
 
 </body>
 </html>
+
 
 
 
