@@ -298,6 +298,14 @@ function lockAnswers() {
 }
 
 // Рендер на въпрос
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 function renderQuestion(i) {
   const q = questions[i];
 
@@ -309,7 +317,10 @@ function renderQuestion(i) {
 
   currentScoreDiv.style.display = "none";
 
-  q.answers.forEach(ans => {
+// 🔥 Разбъркваме отговорите
+const shuffledAnswers = shuffleArray([...q.answers]);
+
+ shuffledAnswers.forEach(ans => {
     const btn = document.createElement("button");
     btn.textContent = ans;
 
@@ -447,7 +458,6 @@ document.getElementById("close-explanation-btn").onclick = () => {
 
 </body>
 </html>
-
 
 
 
