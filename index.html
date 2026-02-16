@@ -1,584 +1,460 @@
 <!doctype html>
 <html lang="bg">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>1234 | Цифромания </title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>⚡ Игри на Знания - Светкавичен куиз ⚡</title>
 
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+  </script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PK66NTHPN8"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
+
   gtag('config', 'G-PK66NTHPN8');
 </script>
+  <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow-x: hidden; overflow-y: auto; }
 
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: flex-start;
+    font-size: 18px; font-family: 'Segoe UI', Arial, sans-serif;
+    max-width: 900px; margin: 0 auto; padding: 20px;
+     background: #00264d;   /* ← ТУК */
+     color: #ffffff;   
+  }
 
-body {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: #00264d;
-  color: #fff;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
+  h1 {
+    text-align: center; color: #ffd100;
+    font-size: clamp(1.5em, 4vw, 2em);
+    margin: 10px auto 15px auto;
+    text-shadow: 0 0 5px #ffb400;
+  }
+
+  #quiz, #start-screen {
+    width: 100%; max-width: 600px; text-align: center;
+    margin-top: 30px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px; padding: 20px;
+    box-shadow: 0 0 10px rgba(255,209,0,0.2);
+  }
+
+  #question { font-size: 1.6em; margin: 20px 0; font-weight: 600; }
+
+  .answers button {
+    display: block; width: 100%; margin: 10px 0; padding: 16px;
+    border: none; border-radius: 10px; cursor: pointer;
+    font-size: 1.2em; background: #333; color: #fff;
+    transition: 0.2s;
+  }
+
+  .answers button:hover { background: #444; transform: scale(1.02); }
+  .answers button.correct { background: #2e7d32; }
+  .answers button.wrong { background: #b71c1c; }
+
+  #timer {
+    text-align: center; font-weight: 800; margin: 20px 0;
+    font-size: clamp(1.8em, 5vw, 2.6em);
+    color: #ffeb3b; text-shadow: 0 0 12px #ffcc00;
+  }
+  #timer.warning { color: #ff4c4c; }
+
+  #status { margin-top: 10px; font-weight: bold; min-height: 30px; }
+
+  #next-btn {
+    margin-top: 25px; padding: 12px 18px; font-size: 1.1em;
+    border: none; border-radius: 8px;
+    background: #ffd100; color: #111; font-weight: bold; cursor: pointer;
+  }
+  #next-btn:hover { background:#ffcc33; transform:scale(1.05); }
+
+  input {
+    padding: 10px; font-size: 1.1em; border-radius: 8px;
+    border: 1px solid #ccc; width: 80%; margin-bottom: 10px;
+  }
+
+  button.start, button.continue-btn {
+    margin-top: 10px; padding: 12px 20px; font-size: 1.1em;
+    border-radius: 8px; border: none;
+    background: #ffd100; color: #111; font-weight: bold; cursor: pointer;
+  }
+  button.start:hover, button.continue-btn:hover {
+    background:#ffcc33; transform:scale(1.05);
+  }
+
+  #current-score {
+    margin: 15px 0; font-size: 1.3em;
+    color: #ffd100; font-weight: bold; display: none;
+  }
+
+  #explanation {
+    display:none; background:rgba(255,255,255,0.08);
+    padding:20px; margin-top:20px;
+    border-radius:12px; max-width:600px; text-align:center;
+  }
+
+  #explanation .button-row {
+    display:flex; justify-content:center; gap:12px; margin-top:20px;
+  }
+
+  .yellow-btn {
+    background:#ffd100; color:#111;
+    padding:14px 22px; font-size:1.1em;
+    border-radius:10px; border:none; font-weight:bold; cursor:pointer;
+  }
+  .yellow-btn:hover { background:#ffcc33; transform:scale(1.05); }
+    #timer {
   text-align: center;
-}
-
-h1 {
-  color: #ffd100;
-  margin-bottom: 20px;
-}
-
-.card {
-  background: rgba(255,255,255,0.06);
-  padding: 20px;
-  border-radius: 16px;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-input {
-  padding: 12px;
-  font-size: 1.2em;
-  border-radius: 8px;
-  border: none;
-  width: 80%;
-  text-align: center;
-}
-
-button {
-  margin-top: 15px;
-  padding: 12px 24px;
-  font-size: 1.1em;
-  border-radius: 8px;
-  border: none;
-  background: #ffd100;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-#timer {
-  font-size: 2.4em;
-  margin: 15px 0;
+  font-weight: 800;
   color: #ffeb3b;
-  font-weight: bold;
-}
-
-#timer.danger {
-  color: #ff5252;
-}
-
-#question {
-  font-size: 1.4em;
   margin: 20px 0;
+  font-size: clamp(1.8em, 5vw, 2.6em);
+  text-shadow: 0 0 12px #ffcc00, 0 0 20px #ffcc00;
+  letter-spacing: 1px;
 }
 
-#feedback {
-  margin-top: 15px;
-  font-size: 1.1em;
+#seconds {
+  display: inline-block;
+  min-width: 70px; /* гарантира, че 9 сек. и 20 сек. заемат еднакво място */
+  text-align: center;
 }
-
-#score {
-  margin-top: 10px;
-  font-size: 1.2em;
-  color: #ffd100;
-}
-
-.correct-answer {
-  color: #00ff88;
-  font-weight: bold;
-}
-
-/* ===== КЛАСАЦИЯ ===== */
-#leaderboard {
-  margin-top: 25px;
-  padding: 15px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 12px;
-}
-
-#leaderboard h2 {
-  margin-bottom: 10px;
-  color: #ffd100;
-  font-size: 1.05em;
-}
-
-#leaderboard-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-#leaderboard-list li {
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.15);
-}
-</style>
+  </style>
 </head>
 
 <body>
-
 <audio id="bg-music" src="music.mp3" loop preload="auto"></audio>
 
-<h1>🔢 Цифромания 2🔢</h1>
+<h1>Игри на Знания<br>⚡ Светкавичен куиз ⚡<br>⚡ епизод 31 ⚡</h1>
 
-<!-- ===== СТАРТ ЕКРАН ===== -->
-<div id="start-screen" class="card">
-  <p>Въведи ID-номера си:</p>
-  <input id="playerId" placeholder="ето тук">
-  <br>
-  <button id="startBtn">Започни</button>
-  <button id="continueBtn" style="display:none;">Продължи оттам, докъдето стигна</button>
-  <button id="archiveBtn">Архив класирания</button>
+<div id="start-screen">
+  <p>Въведете Вашето име:</p>
+
+  <input type="text" id="player-name" placeholder="Име ..." /><br>
+
+  <button class="start" id="start-btn">Започни!</button><br>
+
+  <button class="continue-btn" id="continue-btn" style="display:none;">
+    Продължи от мястото, където спряхте
+  </button>
+
+  <div id="last-result" style="margin-top:15px;"></div>
 </div>
 
-<!-- ===== ИГРА ===== -->
-<div id="game" class="card" style="display:none;">
-  <div id="timer">20</div>
+<div id="quiz" style="display:none;">
+ <div id="timer">
+  <span class="label">Оставащо време:</span>
+  <span id="seconds">20 сек.</span>
+</div>
   <div id="question"></div>
-
-  <input type="number" id="answerInput" placeholder="Въведи число">
-  <br>
-  <button id="submitBtn">Отговори</button>
-
-  <div id="feedback"></div>
-  <div id="score">Точки: 0</div>
+  <div id="answers" class="answers"></div>
+  <div id="status"></div>
+  <button id="next-btn" disabled>Следващ въпрос</button>
+  <div id="current-score"></div>
 </div>
 
-<!-- ===== КЛАСАЦИЯ ===== -->
-<div id="leaderboard" class="card" style="display:none;">
-  <h2 id="leaderboard-title">Класация - 12 февр. 2026 </h2>
-  <ol id="leaderboard-list"></ol>
+<div id="explanation">
+  <div id="explanation-text" style="font-size:1.2em; margin-bottom:20px;"></div>
+
+  <div class="button-row">
+    <button id="next-question-btn" class="yellow-btn">Следващ въпрос</button>
+    <button id="close-explanation-btn" class="yellow-btn">Затвори</button>
+  </div>
 </div>
-
-<!-- ===== FIREBASE SDK ===== -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-  import { 
-    getFirestore, 
-    doc, 
-    setDoc,
-    getDoc,
-    collection,
-    query,
-    where,
-    orderBy,
-    limit,
-    onSnapshot
-  } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyB6ds9mU-xvF1LSvhaeCNtMbROu0k",
-    authDomain: "cifromania-ac182.firebaseapp.com",
-    projectId: "cifromania-ac182",
-    storageBucket: "cifromania-ac182.appspot.com",
-    messagingSenderId: "165208255580",
-    appId: "1:165208255580:web:b36744f0eb527b6571129"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  window.db = db;
-  window.doc = doc;
-  window.setDoc = setDoc;
-  window.getDoc = getDoc;
-  window.collection = collection;
-  window.query = query;
-  window.where = where;
-  window.orderBy = orderBy;
-  window.limit = limit;
-  window.onSnapshot = onSnapshot;
-</script>
-
-<script src="players.js"></script>
 
 <script>
 (async function(){
 
-/* ====== НАСТРОЙКИ НА ВРЕМЕТО ====== */
-const GAME_START_HOUR = 0;
-const GAME_START_MIN = 1;
-const GAME_END_HOUR   = 23;
-const GAME_END_MIN    = 59;
+const startScreen = document.getElementById('start-screen');
+const playerInput = document.getElementById('player-name');
+const startBtn = document.getElementById('start-btn');
+const continueBtn = document.getElementById('continue-btn');
+const lastResultDiv = document.getElementById('last-result');
 
-/* ====== DOM ====== */
-const startScreen = document.getElementById("start-screen");
-const game = document.getElementById("game");
-const startBtn = document.getElementById("startBtn");
-const continueBtn = document.getElementById("continueBtn");
-const idInput = document.getElementById("playerId");
-const timerDiv = document.getElementById("timer");
-const qText = document.getElementById("question");
-const ansInput = document.getElementById("answerInput");
-const submitBtn = document.getElementById("submitBtn");
-const feedback = document.getElementById("feedback");
-const scoreDiv = document.getElementById("score");
+const qText = document.getElementById('question');
+const answersDiv = document.getElementById('answers');
+const nextBtn = document.getElementById('next-btn');
+const status = document.getElementById('status');
+const timerDisplay = document.getElementById('timer');
+const currentScoreDiv = document.getElementById('current-score');
 
-const leaderboardDiv = document.getElementById("leaderboard");
-const leaderboardList = document.getElementById("leaderboard-list");
-const leaderboardTitle = document.getElementById("leaderboard-title");
+const quizDiv = document.getElementById('quiz');
+const explanationDiv = document.getElementById('explanation');
+const explanationText = document.getElementById('explanation-text');
 const bgMusic = document.getElementById("bg-music");
 
-/* ====== STATE ====== */
-let allQuestions = [];
+let playerName = '';
 let questions = [];
 let idx = 0;
 let score = 0;
-let timer;
 let timeLeft = 20;
-let playerName = "";
+let timer;
 
-/* ====== LOAD JSON ====== */
-const res = await fetch("./questions.json");
-allQuestions = await res.json();
+// История
+let gameHistory = [];
 
-/* ====== RANDOM ====== */
-function pickRandom(n){
-  return [...allQuestions].sort(()=>Math.random()-0.5).slice(0,n);
-}
+function showHistoryScreen() {
+  quizDiv.style.display = "none";
+  explanationDiv.style.display = "none";
+  startScreen.style.display = "none";
 
-/* ====== TIME WINDOW ====== */
-function isGameOpenNow(){
-  const now = new Date();
-  const start = new Date();
-  start.setHours(GAME_START_HOUR, GAME_START_MIN,0,0);
-  const end = new Date();
-  end.setHours(GAME_END_HOUR, GAME_END_MIN,0,0);
-  return now>=start && now<end;
-}
+  let historyDiv = document.getElementById("history-screen");
+  if (!historyDiv) {
+    historyDiv = document.createElement("div");
+    historyDiv.id = "history-screen";
+    historyDiv.style.padding = "20px";
+    historyDiv.style.maxWidth = "600px";
+    historyDiv.style.marginTop = "20px";
+    historyDiv.style.background = "rgba(255,255,255,0.08)";
+    historyDiv.style.borderRadius = "12px";
+    historyDiv.style.textAlign = "left";
 
-function msUntilGameEnds(){
-  const now = new Date();
-  const end = new Date();
-  end.setHours(GAME_END_HOUR,GAME_END_MIN,0,0);
-  return end-now;
-}
-
-/* ====== PROGRESS (LOCALSTORAGE) ====== */
-const PROGRESS_KEY = "cifromania_progress";
-
-function saveProgress() {
-  const userId = idInput.value.trim();
-  if (!userId) return;
-  localStorage.setItem(PROGRESS_KEY, JSON.stringify({
-    userId,
-    name: playerName,
-    idx,
-    score
-  }));
-}
-
-function loadProgress() {
-  const raw = localStorage.getItem(PROGRESS_KEY);
-  if (!raw) return null;
-  try { return JSON.parse(raw); } catch { return null; }
-}
-
-function clearProgress() {
-  localStorage.removeItem(PROGRESS_KEY);
-}
-
-/* ====== TIMER ====== */
-function startTimer(){
-  clearInterval(timer);
-  timeLeft=20;
-  timerDiv.textContent=timeLeft;
-  timerDiv.classList.remove("danger");
-
-  timer=setInterval(()=>{
-    timeLeft--;
-    timerDiv.textContent=timeLeft;
-    if(timeLeft<=5) timerDiv.classList.add("danger");
-    if(timeLeft<=0){
-      clearInterval(timer);
-      submitAnswer(true);
-    }
-  },1000);
-}
-
-/* ====== POINTS ====== */
-function calcPoints(diff,q){
-  const r=q.ranges;
-  if(diff===0) return 10;
-  if(r && diff<=r.near) return 5;
-  if(r && diff<=r.mid) return 3;
-  if(r && diff<=r.far) return 1;
-  return 0;
-}
-
-/* ====== QUESTION ====== */
-function renderQuestion(){
-  const q=questions[idx];
-  if (!q) {
-    endGame();
-    return;
+    document.body.appendChild(historyDiv);
   }
-  qText.textContent=`${idx+1}. ${q.question}`;
-  ansInput.value="";
-  ansInput.focus();
-  feedback.textContent="";
-  scoreDiv.textContent=`Точки: ${score}`;
+
+  historyDiv.innerHTML = "<h2>📘 История на играта</h2><br>";
+
+  gameHistory.forEach((h, i) => {
+    historyDiv.innerHTML += `
+      <div style="margin-bottom:20px; padding-bottom:10px; border-bottom:1px solid #444;">
+        <b>${i+1}. ${h.question}</b><br><br>
+        Твоят отговор: <span style="color:${h.correct?'#2ecc71':'#e74c3c'}">${h.yourAnswer}</span><br>
+        Верен отговор: <b style="color:#2ecc71">${h.correctAnswer}</b><br>
+        <div style="margin-top:10px;color:#ddd"><i>${h.explanation}</i></div>
+      </div>
+    `;
+  });
+
+  historyDiv.innerHTML += `
+    <button id="retry2-btn" class="yellow-btn" style="margin-top:20px;">Опитай пак</button>
+  `;
+
+  document.getElementById("retry2-btn").onclick = restartGame;
+}
+
+function restartGame() {
+  localStorage.removeItem("progress");
+  location.reload();
+}
+
+// Зареждане на въпроси
+try {
+  const res = await fetch('questions.json');
+  questions = await res.json();
+} catch(e) {
+  qText.textContent = "Грешка при зареждане на въпросите.";
+  return;
+}
+
+// Последен резултат
+const last = JSON.parse(localStorage.getItem('lastResult'));
+if (last) {
+  lastResultDiv.innerHTML =
+    `<b>Последен резултат:</b><br>${last.name} — ${last.score}/${last.total} (${last.percent}%)<br>
+     <small>${last.date}</small>`;
+}
+
+// Продължаване на игра
+const saved = JSON.parse(localStorage.getItem('progress'));
+if (saved && saved.idx < questions.length) {
+  continueBtn.style.display = "inline-block";
+  continueBtn.textContent = `Продължи от въпрос ${saved.idx + 1}`;
+}
+
+function normalize(s){ return String(s).trim(); }
+
+// Таймер
+function startTimer() {
+  clearInterval(timer);
+  timeLeft = 20;
+  document.getElementById("seconds").textContent = `${timeLeft} сек.`;
+  timerDisplay.classList.remove("warning");
+
+  timer = setInterval(() => {
+    timeLeft--;
+    document.getElementById("seconds").textContent = `${timeLeft} сек.`;
+    if (timeLeft <= 5) timerDisplay.classList.add("warning");
+
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      lockAnswers();
+      status.textContent = "⏰ Времето изтече!";
+      nextBtn.disabled = false;
+    }
+  }, 1000);
+}
+
+function lockAnswers() {
+  Array.from(answersDiv.children).forEach(b => b.disabled = true);
+}
+
+// Рендер на въпрос
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function renderQuestion(i) {
+  const q = questions[i];
+
+  qText.textContent = `${i+1}. ${q.question}`;
+  answersDiv.innerHTML = "";
+  status.textContent = "";
+  nextBtn.disabled = true;
+  explanationDiv.style.display = "none";
+
+  currentScoreDiv.style.display = "none";
+
+// 🔥 Разбъркваме отговорите
+const shuffledAnswers = shuffleArray([...q.answers]);
+
+ shuffledAnswers.forEach(ans => {
+    const btn = document.createElement("button");
+    btn.textContent = ans;
+
+    btn.onclick = () => {
+      lockAnswers();
+      clearInterval(timer);
+
+      const correct = normalize(q.correct);
+      const chosen = normalize(ans);
+
+      if (chosen === correct) {
+        btn.classList.add("correct");
+        status.textContent = "✅ Верен отговор!";
+        score++;
+      } else {
+        btn.classList.add("wrong");
+        status.textContent = `❌ Грешно! Верният отговор е: ${q.correct}`;
+        Array.from(answersDiv.children).forEach(b => {
+          if (normalize(b.textContent) === correct) b.classList.add("correct");
+        });
+      }
+
+      gameHistory.push({
+        question: q.question,
+        yourAnswer: ans,
+        correctAnswer: q.correct,
+        correct: chosen === correct,
+        explanation: q.explanation
+      });
+
+      currentScoreDiv.textContent = `Текущ резултат: ${score} точки`;
+      currentScoreDiv.style.display = "block";
+
+      explanationText.innerHTML = q.explanation;
+      explanationDiv.style.display = "block";
+
+      nextBtn.disabled = false;
+
+      localStorage.setItem("progress", JSON.stringify({
+        name: playerName,
+        idx: i,
+        score
+      }));
+    };
+
+    answersDiv.appendChild(btn);
+  });
+
   startTimer();
 }
 
-/* ====== ANSWER ====== */
-function submitAnswer(timeout=false){
-  clearInterval(timer);
-
-  const q=questions[idx];
-  if (!q) {
-    endGame();
-    return;
-  }
-
-  const correct=Number(q.answer);
-  const user=timeout?null:Number(ansInput.value);
-
-  const diff=user===null||isNaN(user)
-    ?Infinity
-    :Math.abs(user-correct);
-
-  const pts=calcPoints(diff,q);
-  score+=pts;
-
-  if(timeout){
-    feedback.innerHTML=`⏰ Времето изтече! <span class="correct-answer">✔ Верен: ${correct}</span>`;
-  }else{
-    feedback.innerHTML=`<span class="correct-answer">✔ Верен: ${correct}</span> | Отклонение: ${diff} → ${pts} точки`;
-  }
-
-  scoreDiv.textContent=`Точки: ${score}`;
-
-  saveProgress();
-
-  setTimeout(()=>{
-    idx++;
-    if(idx>=questions.length){
-      endGame();
-    }else{
-      renderQuestion();
-    }
-  },5000);
-}
-
-/* ====== FIRESTORE SAVE ====== */
-async function saveToFirestore(finalScore) {
-  const today = new Date().toLocaleDateString("sv-SE");
-  const userId = idInput.value.trim();
-
-  const data = {
-    userId,
-    name: playerName,
-    score: finalScore,
-    gameId: today,
-    timestamp: Date.now()
-  };
-
-  try {
-    await window.setDoc(
-      window.doc(window.db, "results", `${today}_${userId}`),
-      data
-    );
-  } catch (err) {
-    console.error("❌ RESULTS ERROR:", err);
-  }
-
-  try {
-    await window.setDoc(
-      window.doc(window.db, "archive", today, "players", userId),
-      data
-    );
-  } catch (err) {
-    console.error("❌ ARCHIVE ERROR:", err);
-  }
-}
-
-/* ====== ТОП 5 ПО ВРЕМЕ НА ИГРА ====== */
-function startLeaderboard(){
-  const today = new Date().toLocaleDateString("sv-SE");
-
-  const q = window.query(
-    window.collection(window.db,"results"),
-    window.where("gameId","==",today),
-    window.orderBy("score","desc"),
-    window.limit(5)
-  );
-
-  leaderboardTitle.textContent = "Топ 5 за деня";
-
-  window.onSnapshot(q,(snap)=>{
-    leaderboardList.innerHTML="";
-    let position = 1;
-    snap.forEach(docSnap=>{
-      const d = docSnap.data();
-      const li = document.createElement("li");
-      li.textContent = `${position}. ${d.name || d.userId} — ${d.score} т.`;
-      leaderboardList.appendChild(li);
-      position++;
-    });
-    leaderboardDiv.style.display="block";
-  });
-}
-
-/* ====== END GAME ====== */
-async function endGame() {
-  clearInterval(timer);
-  await saveToFirestore(score);
-  clearProgress();
-
-  qText.innerHTML = `🏁 <b>${playerName}</b>, завърши с <b>${score}</b> точки`;
-  timerDiv.textContent = "";
-  ansInput.style.display = "none";
-  submitBtn.style.display = "none";
-}
-
-/* ====== РЕЗЮМЕ НА ИГРА ====== */
-function resumeGame(saved){
-  const userId = saved.userId;
-  playerName = saved.name || PLAYERS[userId] || "";
-  idInput.value = userId;
-
+// Продължи игра
+continueBtn.onclick = () => {
+  try { bgMusic.play(); } catch(e){}
+  playerName = saved.name;
   idx = saved.idx;
   score = saved.score;
 
   startScreen.style.display = "none";
-  game.style.display = "block";
+  quizDiv.style.display = "block";
+  renderQuestion(idx);
+};
 
+// Старт
+startBtn.onclick = () => {
   try { bgMusic.play(); } catch(e){}
+  playerName = playerInput.value.trim();
+  if (!playerName) return alert("Въведете име!");
 
-  startLeaderboard();
+  localStorage.removeItem("progress");
 
-  questions = pickRandom(50);
-  renderQuestion();
+  startScreen.style.display = "none";
+  quizDiv.style.display = "block";
+  
+  idx = 0;
+  score = 0;
 
-  setTimeout(endGame, msUntilGameEnds());
+  renderQuestion(0);
+};
+
+// Следващ въпрос от бутон
+nextBtn.onclick = nextQuestionFromExplanation;
+document.getElementById("next-question-btn").onclick = nextQuestionFromExplanation;
+
+function nextQuestionFromExplanation() {
+  explanationDiv.style.display = "none";
+  idx++;
+
+  if (idx >= questions.length) return finishGame();
+
+  renderQuestion(idx);
 }
 
-/* ====== CONTINUE BUTTON ====== */
-continueBtn.onclick = () => {
-  const saved = loadProgress();
-  if (!saved) return;
-  resumeGame(saved);
-};
+function finishGame() {
+  clearInterval(timer);
 
-/* ====== EVENTS ====== */
-submitBtn.onclick = () => submitAnswer(false);
+  const percent = Math.round(score / questions.length * 100);
 
-ansInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") submitAnswer(false);
-});
+  qText.innerHTML =
+    `🏁 Край на играта, <b>${playerName}</b>!<br><br>
+    Резултат: <b>${score}</b> от <b>${questions.length}</b> (${percent}%).<br><br>`;
 
-document.getElementById("archiveBtn").onclick = () => {
-  window.location.href = "archive.html";
-};
+  answersDiv.innerHTML = "";
+  nextBtn.disabled = true;
+  timerDisplay.textContent = "";
+  currentScoreDiv.style.display = "none";
 
-/* ====== START GAME ====== */
-startBtn.onclick=async ()=>{
+  localStorage.setItem("lastResult", JSON.stringify({
+    name: playerName,
+    score,
+    total: questions.length,
+    percent,
+    date: new Date().toLocaleString('bg-BG')
+  }));
 
-  const id=idInput.value.trim();
+  localStorage.removeItem("progress");
 
-  if(!PLAYERS[id]){
-    alert("❌ Невалидно ID");
-    return;
-  }
+  qText.innerHTML += `
+    <div style="display:flex; justify-content:center; gap:12px; margin-top:20px;">
+      <button id="history-btn" class="yellow-btn">История на играта</button>
+      <button id="retry-btn" class="yellow-btn">Опитай пак</button>
+    </div>
+  `;
 
-  if(!isGameOpenNow()){
-    alert("❌ Цифромания е отключена от 19.40 до 20.00 часа");
-    return;
-  }
-
-  const today = new Date().toLocaleDateString("sv-SE");
-  const docRef = window.doc(window.db, "results", `${today}_${id}`);
-  const existing = await window.getDoc(docRef);
-
-  // ако вече има записан резултат за днес → край
-  if (existing.exists()) {
-    await window.setDoc(
-      window.doc(window.db, "archive", today, "players", id),
-      existing.data()
-    );
-
-    startScreen.innerHTML = "<p>Вече си играл за днес, заповядай утре пак.</p>";
-    game.style.display = "none";
-    return;
-  }
-
-  const saved = loadProgress();
-
-  // ако има недовършена игра за това ID → продължаваме, не започваме нова
-  if (saved && saved.userId === id) {
-    resumeGame(saved);
-    return;
-  }
-
-  // нова игра
-  playerName = PLAYERS[id];
-  idInput.value = id;
-  clearProgress();
-
-  startScreen.style.display="none";
-  game.style.display="block";
-
-  try { bgMusic.play(); } catch(e){}
-
-  startLeaderboard();
-
-  questions=pickRandom(50);
-  idx=0;
-  score=0;
-
-  renderQuestion();
-
-  setTimeout(endGame,msUntilGameEnds());
-};
-
-/* ====== ДНЕШНА КЛАСАЦИЯ НА СТАРТОВИЯ ЕКРАН + ПРОДЪЛЖИ ====== */
-function showTodayLeaderboard() {
-    const today = new Date().toLocaleDateString("sv-SE");
-
-    leaderboardTitle.textContent = `Днешна класация – ${today}`;
-
-    const q = window.query(
-        window.collection(window.db, "results"),
-        window.where("gameId", "==", today),
-        window.orderBy("score", "desc")
-    );
-
-    window.onSnapshot(q, (snap) => {
-        leaderboardList.innerHTML = "";
-        let pos = 1;
-
-        snap.forEach(docSnap => {
-            const d = docSnap.data();
-            const li = document.createElement("li");
-            li.textContent = `${pos}. ${d.name} — ${d.score} т.`;
-            leaderboardList.appendChild(li);
-            pos++;
-        });
-
-        leaderboardDiv.style.display = "block";
-    });
+  document.getElementById("history-btn").onclick = showHistoryScreen;
+  document.getElementById("retry-btn").onclick = restartGame;
 }
 
-window.addEventListener("load", () => {
-  showTodayLeaderboard();
-
-  const saved = loadProgress();
-  if (saved) {
-    idInput.value = saved.userId;
-    continueBtn.style.display = "inline-block";
-    continueBtn.textContent = `Продължи от въпрос ${saved.idx + 1}`;
-  }
-});
+document.getElementById("close-explanation-btn").onclick = () => {
+  explanationDiv.style.display = "none";
+};
 
 })();
 </script>
-
-
 
 </body>
 </html>
