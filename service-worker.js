@@ -1,4 +1,4 @@
-const CACHE_NAME = 'quiz-cache-v61';
+const CACHE_NAME = 'quiz-cache-v62';
 
 const urlsToCache = [
   '/quiz-game/',                 // началната страница на Спокойната игра
