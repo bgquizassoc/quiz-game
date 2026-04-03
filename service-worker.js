@@ -1,11 +1,13 @@
-const CACHE_NAME = 'quiz-cache-v60';
+const CACHE_NAME = 'quiz-cache-v61';
+
 const urlsToCache = [
-  './',
-  './index.html',
-  './questions.json',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+  '/quiz-game/',                 // началната страница на Спокойната игра
+  '/quiz-game/index.html',
+  '/quiz-game/questions.json',
+  '/quiz-game/manifest.json',
+  '/quiz-game/icon-192.png',
+  '/quiz-game/icon-512.png',
+  '/quiz-game/music.mp3'
 ];
 
 self.addEventListener('install', event => {
@@ -25,66 +27,12 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    })
-  );
+  // Кешира само файловете на Спокойната игра
+  if (event.request.url.includes('/quiz-game/')) {
+    event.respondWith(
+      caches.match(event.request).then(response => {
+        return response || fetch(event.request);
+      })
+    );
+  }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
